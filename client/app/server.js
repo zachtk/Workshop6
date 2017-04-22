@@ -1,34 +1,3 @@
-import {readDocument, writeDocument, addDocument, deleteDocument, getCollection} from './database.js';
-
-/**
- * Emulates how a REST call is *asynchronous* -- it calls your function back
- * some time in the future with data.
- */
-function emulateServerReturn(data, cb) {
-  setTimeout(() => {
-    cb(data);
-  }, 4);
-}
-
-/**
- * Resolves a feed item. Internal to the server, since it's synchronous.
- */
-function getFeedItemSync(feedItemId) {
-  var feedItem = readDocument('feedItems', feedItemId);
-  // Resolve 'like' counter.
-  feedItem.likeCounter = feedItem.likeCounter.map((id) =>
-                            readDocument('users', id));
-  // Assuming a StatusUpdate. If we had other types of
-  // FeedItems in the DB, we would
-  // need to check the type and have logic for each type.
-  feedItem.contents.author = readDocument('users', feedItem.contents.author);
-  // Resolve comment author.
-  feedItem.comments.forEach((comment) => {
-    comment.author = readDocument('users', comment.author);
-  });
-  return feedItem;
-}
-
 /**
  * Emulates a REST call to get the feed data for a particular user.
  */
