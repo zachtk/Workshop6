@@ -29,8 +29,8 @@ app.listen(3000, function () {
 });
 
 /**
-- * Resolves a feed item. Internal to the server, since it's synchronous.
-- */
+ * Resolves a feed item. Internal to the server, since it's synchronous.
+ */
 function getFeedItemSync(feedItemId) {
   var feedItem = readDocument('feedItems', feedItemId);
   // Resolve 'like' counter.
